@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patio Shade Planner</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f0ece4;
+      color: #2d2d2d;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    h1 { font-size: 1.25rem; font-weight: 600; margin-bottom: 18px; letter-spacing: -0.01em; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 16px;
+      max-width: 1100px;
+    }
+
+    /* ---- Controls panel ---- */
+    .controls {
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #999;
+      margin: 14px 0 10px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    .divider { border: none; border-top: 1px solid #f0f0f0; margin: 10px 0; }
+
+    .field { margin-bottom: 12px; }
+
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.82rem;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    .val { color: #2563eb; font-weight: 700; font-size: 0.88rem; }
+
+    input[type="range"] {
+      width: 100%;
+      height: 4px;
+      accent-color: #2563eb;
+      cursor: pointer;
+    }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .text-input-wrap label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"], input[type="date"], input[type="number"] {
+      width: 100%;
+      padding: 6px 9px;
+      border: 1.5px solid #e8e8e8;
+      border-radius: 7px;
+      font-size: 0.84rem;
+      background: #fafafa;
+      color: #333;
+      transition: border-color 0.15s;
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #2563eb;
+      background: #fff;
+    }
+
+    .note { font-size: 0.7rem; color: #bbb; margin-top: 2px; }
+
+    .compass-label { font-size: 0.72rem; color: #888; margin-top: 3px; }
+
+    .time-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .time-row input[type="range"] { flex: 1; }
+    .time-display {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #2563eb;
+      min-width: 58px;
+      text-align: right;
+    }
+
+    /* ---- Main area ---- */
+    .main { display: flex; flex-direction: column; gap: 14px; }
+
+    /* ---- Stats strip ---- */
+    .stats {
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .stat { text-align: center; }
+    .stat-val {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      line-height: 1;
+    }
+    .stat-val.dim { color: #aaa; }
+    .stat-label {
+      font-size: 0.68rem;
+      color: #aaa;
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    /* ---- Canvas card ---- */
+    .canvas-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      flex: 1;
+    }
+
+    canvas { display: block; border-radius: 8px; }
+
+    /* ---- Coverage bar ---- */
+    .cov-bar-wrap { margin-top: 2px; }
+    .cov-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+    .cov-bar {
+      height: 6px;
+      background: #eee;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .cov-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      border-radius: 3px;
+      transition: width 0.15s;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 680px) {
+      .layout { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Patio Shade Planner</h1>
+
+  <div class="layout">
+
+    <!-- ===== Controls ===== -->
+    <div class="controls">
+
+      <div class="section-title">Structure</div>
+
+      <div class="field">
+        <label>Pole height P<sub>H</sub> <span class="val" id="ph-val">72"</span></label>
+        <input type="range" id="ph" min="24" max="108" value="72" step="1">
+      </div>
+
+      <div class="field">
+        <label>Gap wall → mount G<sub>L</sub> <span class="val" id="gl-val">12"</span></label>
+        <input type="range" id="gl" min="0" max="60" value="12" step="1">
+      </div>
+
+      <div class="row-2" style="margin-bottom:12px">
+        <div class="text-input-wrap">
+          <label>Floor width F<sub>W</sub></label>
+          <input type="number" id="fw" value="84">
+          <div class="note">inches</div>
+        </div>
+        <div class="text-input-wrap">
+          <label>Wall height W<sub>H</sub></label>
+          <input type="number" id="wh" value="109">
+          <div class="note">inches</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Hardware deduction <span class="val" id="hw-val">11"</span></label>
+        <input type="range" id="hw" min="10" max="12" value="11" step="1">
+        <div class="note">subtracted from S<sub>L</sub> for actual sail to buy</div>
+      </div>
+
+      <hr class="divider">
+      <div class="section-title">Location</div>
+
+      <div class="row-2" style="margin-bottom:12px">
+        <div class="text-input-wrap">
+          <label>Latitude</label>
+          <input type="text" id="lat" value="37.77">
+        </div>
+        <div class="text-input-wrap">
+          <label>Longitude</label>
+          <input type="text" id="lon" value="-122.42">
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="section-title">Date &amp; Time</div>
+
+      <div class="field">
+        <input type="date" id="date">
+      </div>
+
+      <div class="time-row">
+        <input type="range" id="time" min="360" max="1200" value="780" step="15">
+        <div class="time-display" id="time-label">1:00 PM</div>
+      </div>
+
+      <div class="cov-bar-wrap">
+        <div class="cov-bar-label">
+          <span>Coverage</span>
+          <span id="cov-pct">—</span>
+        </div>
+        <div class="cov-bar"><div class="cov-fill" id="cov-fill" style="width:0%"></div></div>
+      </div>
+
+    </div><!-- /controls -->
+
+    <!-- ===== Main ===== -->
+    <div class="main">
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-val" id="s-sl">—</div>
+          <div class="stat-label">S<sub>L</sub> sail length (in)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val" id="s-sl-net">—</div>
+          <div class="stat-label">S<sub>L</sub> net (−hardware)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val" id="s-st">—</div>
+          <div class="stat-label">S<sub>θ</sub> sail angle</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val" id="s-sun">—</div>
+          <div class="stat-label">Sun elevation</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val" id="s-cov">—</div>
+          <div class="stat-label">Patio coverage</div>
+        </div>
+      </div>
+
+      <div class="canvas-card">
+        <canvas id="cv"></canvas>
+      </div>
+
+    </div><!-- /main -->
+  </div>
+
+  <script>
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    function fmtTime(min) {
+      const h = Math.floor(min / 60), m = min % 60;
+      return `${h % 12 || 12}:${String(m).padStart(2,'0')} ${h < 12 ? 'AM' : 'PM'}`;
+    }
+
+    const COMPASS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+    function compassDir(deg) { return COMPASS[Math.round(((deg % 360) + 360) % 360 / 22.5) % 16]; }
+
+    // ── DOM refs ─────────────────────────────────────────────────────────────
+
+    const $ph      = document.getElementById('ph');
+    const $gl      = document.getElementById('gl');
+    const $fw      = document.getElementById('fw');
+    const $wh      = document.getElementById('wh');
+    const $hw      = document.getElementById('hw');
+    const $lat     = document.getElementById('lat');
+    const $lon     = document.getElementById('lon');
+    const $date    = document.getElementById('date');
+    const $time    = document.getElementById('time');
+    const cv       = document.getElementById('cv');
+    const ctx      = cv.getContext('2d');
+
+    // ── Defaults ─────────────────────────────────────────────────────────────
+
+    const now = new Date();
+    $date.value = now.toISOString().slice(0, 10);
+
+    // ── Compute ───────────────────────────────────────────────────────────────
+
+    function compute() {
+      const PH  = +$ph.value;
+      const GL  = +$gl.value;
+      const FW  = +$fw.value || 84;
+      const WH  = +$wh.value || 109;
+      const HW  = +$hw.value;
+      const lat = parseFloat($lat.value);
+      const lon = parseFloat($lon.value);
+      const timeMin = +$time.value;
+
+      // Sail geometry
+      const MH = WH - PH;
+      const MW = FW - GL;
+      const SL = Math.sqrt(MH * MH + MW * MW);
+      const ST = Math.acos(MH / SL) * 180 / Math.PI;   // degrees from horizontal
+
+      // Sun position
+      const [yr, mo, dy] = $date.value.split('-').map(Number);
+      const dt = new Date(yr, mo - 1, dy, Math.floor(timeMin / 60), timeMin % 60, 0);
+      const sun = SunCalc.getPosition(dt, lat, lon);
+      const alt = sun.altitude;   // radians, positive = above horizon
+
+      // Shadow projection in cross-section (sun always from left)
+      let coverage = 0;
+      let shadowLo = null, shadowHi = null;
+
+      if (alt > 0.01) {
+        // Sun is above horizon, calculate shadow cast to the right
+        const sf = 1 / Math.tan(alt);
+
+        // Sail endpoints: pole top (0, PH), wall mount (FW-GL, WH)
+        const sA = 0      + PH * sf;
+        const sB = FW - GL + WH * sf;
+
+        shadowLo = Math.min(sA, sB);
+        shadowHi = Math.max(sA, sB);
+
+        const lo = Math.max(0, shadowLo);
+        const hi = Math.min(FW, shadowHi);
+        if (hi > lo) coverage = (hi - lo) / FW;
+      }
+
+      return { PH, GL, FW, WH, HW, MH, MW, SL, ST, alt, coverage, shadowLo, shadowHi, timeMin, azimuth: sun.azimuth };
+    }
+
+    // ── Draw ─────────────────────────────────────────────────────────────────
+
+    function draw(s) {
+      const W = cv.width, H = cv.height;
+
+      // Scale to fit the cross-section: FW + covered patio extension wide, max(WH, PH) tall
+      const PATIO_WIDTH = 80; // covered patio width
+      const PAD_L = 140, PAD_R = 40, PAD_T = 24, PAD_B = 36;
+      const drawW = W - PAD_L - PAD_R;
+      const drawH = H - PAD_T - PAD_B;
+      const maxZ  = Math.max(s.WH, s.PH) * 1.1;
+      const totalFloorW = s.FW + PATIO_WIDTH;
+
+      const SCALE = Math.min(drawW / totalFloorW, drawH / maxZ);
+      const originX = PAD_L;
+      const originY = H - PAD_B;
+
+      const cx = x => originX + x * SCALE;
+      const cy = z => originY - z * SCALE;
+
+      // Sky gradient
+      const sky = ctx.createLinearGradient(0, 0, 0, originY);
+      if (s.alt > 0) {
+        sky.addColorStop(0, '#4a90d9');
+        sky.addColorStop(1, '#b8d8f0');
+      } else {
+        sky.addColorStop(0, '#0d1b3e');
+        sky.addColorStop(1, '#1a2f5e');
+      }
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, W, originY);
+
+      // Ground — full canvas
+      ctx.fillStyle = '#c8b97a';
+      ctx.fillRect(0, originY, W, H - originY);
+
+      // Covered patio room (to the right of the wall)
+      const patioLeft = cx(s.FW);
+      const patioRight = cx(s.FW + PATIO_WIDTH);
+      const patioTop = cy(s.WH);
+      const patioFloor = originY;
+      const ZONE_HEIGHT = 14;
+
+      // Covered patio background (darker gray)
+      ctx.fillStyle = '#666666';
+      ctx.fillRect(patioLeft, patioTop, patioRight - patioLeft, patioFloor - patioTop);
+
+      // Calculate shadow on covered patio
+      let patioShadowCoverage = 0;
+      if (s.shadowLo !== null && s.alt > 0.01) {
+        const shadowRight = s.shadowHi;
+        const patioStartX = s.FW;
+        const patioEndX = s.FW + PATIO_WIDTH;
+
+        if (shadowRight > patioStartX) {
+          const shadowOnPatio = Math.min(shadowRight, patioEndX) - patioStartX;
+          if (shadowOnPatio > 0) {
+            patioShadowCoverage = shadowOnPatio / PATIO_WIDTH;
+            // Draw shadow on patio
+            ctx.fillStyle = '#3A4A5E';
+            ctx.fillRect(patioLeft, patioTop, (shadowOnPatio) * SCALE, patioFloor - patioTop);
+          }
+        }
+      }
+
+      // Patio room label
+      ctx.font = 'bold 14px system-ui';
+      ctx.fillStyle = '#ff4444';
+      ctx.textAlign = 'center';
+      ctx.fillText('COVERED PATIO', (patioLeft + patioRight) / 2, (patioTop + patioFloor) / 2 + 6);
+
+      // Patio floor zones: lit (yellow) vs shaded (dark blue-gray)
+      if (s.shadowLo !== null) {
+        const lo = Math.max(0, s.shadowLo);
+        const hi = Math.min(s.FW, s.shadowHi);
+
+        // Left lit zone (before shadow)
+        if (lo > 0) {
+          ctx.fillStyle = '#FFE680';
+          ctx.fillRect(cx(0), originY, cx(lo) - cx(0), ZONE_HEIGHT);
+        }
+
+        // Shaded zone
+        if (hi > lo) {
+          ctx.fillStyle = '#3A4A5E';
+          ctx.fillRect(cx(lo), originY, cx(hi) - cx(lo), ZONE_HEIGHT);
+        }
+
+        // Right lit zone (after shadow)
+        if (hi < s.FW) {
+          ctx.fillStyle = '#FFE680';
+          ctx.fillRect(cx(hi), originY, cx(s.FW) - cx(hi), ZONE_HEIGHT);
+        }
+      } else {
+        // No shadow — entire floor is lit
+        ctx.fillStyle = '#FFE680';
+        ctx.fillRect(cx(0), originY, s.FW * SCALE, ZONE_HEIGHT);
+      }
+
+      // Zone labels
+      if (s.shadowLo !== null) {
+        const lo = Math.max(0, s.shadowLo);
+        const hi = Math.min(s.FW, s.shadowHi);
+
+        // "Shaded" label
+        if (hi > lo && (hi - lo) > s.FW * 0.15) {
+          ctx.font = 'bold 13px system-ui';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          ctx.textAlign = 'center';
+          ctx.fillText('Shaded', (cx(lo) + cx(hi)) / 2, originY + ZONE_HEIGHT / 2 + 5);
+        }
+
+        // "Lit" label (left zone)
+        if (lo > s.FW * 0.15) {
+          ctx.font = '11px system-ui';
+          ctx.fillStyle = 'rgba(80, 80, 80, 0.7)';
+          ctx.textAlign = 'center';
+          ctx.fillText('Lit', (cx(0) + cx(lo)) / 2, originY + ZONE_HEIGHT / 2 + 4);
+        }
+
+        // "Lit" label (right zone)
+        if ((s.FW - hi) > s.FW * 0.15) {
+          ctx.font = '11px system-ui';
+          ctx.fillStyle = 'rgba(80, 80, 80, 0.7)';
+          ctx.textAlign = 'center';
+          ctx.fillText('Lit', (cx(hi) + cx(s.FW)) / 2, originY + ZONE_HEIGHT / 2 + 4);
+        }
+      } else if (s.coverage > 0 && s.coverage < 0.95) {
+        // Mostly lit
+        ctx.font = '12px system-ui';
+        ctx.fillStyle = 'rgba(80, 80, 80, 0.6)';
+        ctx.textAlign = 'center';
+        ctx.fillText('Lit', cx(s.FW / 2), originY + ZONE_HEIGHT / 2 + 4);
+      }
+
+      // Wall (right side)
+      ctx.fillStyle = '#a0a8b0';
+      ctx.fillRect(cx(s.FW) - 7, cy(s.WH), 7, s.WH * SCALE);
+
+      // Pole (left side)
+      ctx.fillStyle = '#7a6245';
+      ctx.fillRect(cx(0) - 4, cy(s.PH), 8, s.PH * SCALE);
+
+      // Sail (line + subtle fill)
+      const sailX1 = cx(0), sailY1 = cy(s.PH);
+      const sailX2 = cx(s.FW - s.GL), sailY2 = cy(s.WH);
+
+      ctx.beginPath();
+      ctx.moveTo(sailX1, sailY1);
+      ctx.lineTo(sailX2, sailY2);
+      ctx.lineTo(sailX2, originY);
+      ctx.lineTo(sailX1, originY);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(255,255,255,0.10)';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(sailX1, sailY1);
+      ctx.lineTo(sailX2, sailY2);
+      ctx.strokeStyle = '#f5f0e8';
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Enhanced sun rays (sun moves across sky based on azimuth and altitude)
+      if (s.alt > 0.01) {
+        // Calculate sun position based on azimuth (east-west) and altitude (elevation)
+        // Azimuth: 0=south, π/2=west, -π/2=east, π=north
+        // Map to canvas: east (right) to west (left)
+        const centerX = (originX + cx(s.FW)) / 2;
+        const horizontalRange = (cx(s.FW) - originX) * 0.6; // ±60% of patio width
+
+        const sunX = centerX - Math.sin(s.azimuth) * horizontalRange;
+        const sunY = PAD_T + 24 + (1 - Math.sin(s.alt)) * (originY - PAD_T - 50);
+
+        // Draw 10 rays from sun through/around the sail toward the patio (right)
+        for (let i = 0; i < 10; i++) {
+          const t = i / 9; // 0 to 1 across patio width
+          const xPatio = s.FW * t;
+          const xFloor = cx(xPatio);
+          const yFloor = originY;
+
+          // Check if this ray hits the shaded area
+          const isShaded = s.shadowLo !== null && xPatio >= Math.max(0, s.shadowLo) && xPatio <= Math.min(s.FW, s.shadowHi);
+
+          // Ray color: bright yellow if lit, dim if shaded
+          if (isShaded) {
+            ctx.strokeStyle = 'rgba(100, 120, 150, 0.25)';
+            ctx.lineWidth = 0.8;
+          } else {
+            ctx.strokeStyle = 'rgba(255, 240, 100, 0.6)';
+            ctx.lineWidth = 1.1;
+          }
+
+          // Draw line from sun to floor point
+          ctx.beginPath();
+          ctx.moveTo(sunX, sunY);
+          ctx.lineTo(xFloor, yFloor);
+          ctx.stroke();
+        }
+      }
+
+      // Enhanced sun symbol — moves across sky based on time of day
+      if (s.alt > 0) {
+        // Calculate sun position based on azimuth and altitude (same as rays)
+        const centerX = (originX + cx(s.FW)) / 2;
+        const horizontalRange = (cx(s.FW) - originX) * 0.6;
+        const sunX = centerX - Math.sin(s.azimuth) * horizontalRange;
+        const sunY = PAD_T + 24 + (1 - Math.sin(s.alt)) * (originY - PAD_T - 50);
+
+        // Large outer glow
+        const glow3 = ctx.createRadialGradient(sunX, sunY, 20, sunX, sunY, 60);
+        glow3.addColorStop(0, 'rgba(255, 200, 0, 0.15)');
+        glow3.addColorStop(1, 'rgba(255, 150, 0, 0)');
+        ctx.fillStyle = glow3;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, 60, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Mid glow
+        const glow2 = ctx.createRadialGradient(sunX, sunY, 12, sunX, sunY, 38);
+        glow2.addColorStop(0, 'rgba(255, 210, 50, 0.35)');
+        glow2.addColorStop(1, 'rgba(255, 170, 0, 0.1)');
+        ctx.fillStyle = glow2;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, 38, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Bright inner glow
+        const glow1 = ctx.createRadialGradient(sunX, sunY, 8, sunX, sunY, 20);
+        glow1.addColorStop(0, 'rgba(255, 230, 100, 0.5)');
+        glow1.addColorStop(1, 'rgba(255, 210, 50, 0.2)');
+        ctx.fillStyle = glow1;
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, 20, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Sun circle itself
+        ctx.beginPath();
+        ctx.arc(sunX, sunY, 22, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFD600';
+        ctx.fill();
+
+        // Sun highlight
+        ctx.beginPath();
+        ctx.arc(sunX - 7, sunY - 7, 7, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.fill();
+      } else {
+        const moonX = 50;
+        const moonY = PAD_T + 24;
+        ctx.beginPath();
+        ctx.arc(moonX, moonY, 14, 0, Math.PI * 2);
+        ctx.fillStyle = '#e8e8e8';
+        ctx.fill();
+      }
+
+      // Labels
+      ctx.font = '11px system-ui';
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+
+      // F_W label along floor
+      ctx.textAlign = 'center';
+      ctx.fillText(`F_W = ${s.FW}"`, cx(s.FW / 2), originY + 20);
+
+      // Covered patio width label
+      ctx.textAlign = 'center';
+      ctx.fillText(`${PATIO_WIDTH}"`, (patioLeft + patioRight) / 2, originY + 20);
+
+      // PH label left
+      ctx.textAlign = 'right';
+      ctx.fillText(`P_H = ${s.PH}"`, cx(0) - 8, cy(s.PH / 2) + 4);
+
+      // WH label right
+      ctx.textAlign = 'left';
+      ctx.fillText(`W_H = ${s.WH}"`, cx(s.FW) + 5, cy(s.WH / 2) + 4);
+
+      // SL label on sail
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 11px system-ui';
+      const midSailX = (sailX1 + sailX2) / 2 - 12;
+      const midSailY = (sailY1 + sailY2) / 2 - 8;
+      ctx.fillText(`S_L = ${s.SL.toFixed(1)}"`, midSailX, midSailY);
+
+      ctx.textAlign = 'left';
+    }
+
+    // ── Update ────────────────────────────────────────────────────────────────
+
+    function update() {
+      const s = compute();
+
+      // Labels
+      document.getElementById('ph-val').textContent    = `${s.PH}"`;
+      document.getElementById('gl-val').textContent    = `${s.GL}"`;
+      document.getElementById('hw-val').textContent    = `${s.HW}"`;
+      document.getElementById('time-label').textContent = fmtTime(s.timeMin);
+
+      // Stats
+      const pct = Math.round(s.coverage * 100);
+      document.getElementById('s-sl').textContent    = s.SL.toFixed(1) + '"';
+      document.getElementById('s-sl-net').textContent = Math.max(0, s.SL - s.HW).toFixed(1) + '"';
+      document.getElementById('s-st').textContent    = s.ST.toFixed(1) + '°';
+      document.getElementById('s-sun').textContent   = (s.alt * 180 / Math.PI).toFixed(1) + '°';
+      document.getElementById('s-cov').textContent   = pct + '%';
+
+      // Coverage bar
+      document.getElementById('cov-pct').textContent   = pct + '%';
+      document.getElementById('cov-fill').style.width  = pct + '%';
+
+      // Canvas (responsive)
+      const card = cv.parentElement;
+      cv.width  = card.clientWidth - 32;
+      cv.height = Math.round(cv.width * 0.62);
+      draw(s);
+    }
+
+    // ── Events ────────────────────────────────────────────────────────────────
+
+    [$ph, $gl, $fw, $wh, $hw, $lat, $lon, $date, $time].forEach(el =>
+      el.addEventListener('input', update)
+    );
+    window.addEventListener('resize', update);
+
+    update();
+  </script>
+</body>
+</html>
