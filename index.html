@@ -200,6 +200,260 @@
       .layout { grid-template-columns: 1fr; }
       .stats { grid-template-columns: repeat(3, 1fr); }
     }
+
+    /* ================================================================
+       OPTIMIZER SECTION
+       ================================================================ */
+
+    .optimizer {
+      max-width: 1100px;
+      margin-top: 20px;
+    }
+
+    .opt-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .opt-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      flex: 1;
+    }
+
+    .opt-outdated {
+      font-size: 0.72rem;
+      color: #b45309;
+      background: #fff4e0;
+      border: 1px solid #f59e0b;
+      border-radius: 6px;
+      padding: 3px 9px;
+      display: none;
+    }
+    .opt-outdated.visible { display: inline-block; }
+
+    select {
+      padding: 6px 10px;
+      border: 1.5px solid #e8e8e8;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      background: #fafafa;
+      color: #333;
+      cursor: pointer;
+    }
+    select:focus { outline: none; border-color: #2563eb; }
+
+    .btn-run {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .btn-run:hover { background: #1d4ed8; }
+    .btn-run:disabled { background: #93c5fd; cursor: not-allowed; }
+
+    .opt-progress-wrap {
+      background: #fff;
+      border-radius: 14px;
+      padding: 14px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      margin-bottom: 14px;
+      display: none;
+    }
+    .opt-progress-wrap.visible { display: block; }
+    .opt-progress-label {
+      font-size: 0.78rem;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    .opt-progress-bar {
+      height: 6px;
+      background: #eee;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .opt-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      border-radius: 3px;
+      transition: width 0.1s;
+      width: 0%;
+    }
+
+    .opt-results { display: none; }
+    .opt-results.visible { display: block; }
+
+    /* Recommendation card */
+    .opt-rec {
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      border-left: 4px solid #2563eb;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0 24px;
+      align-items: start;
+    }
+    .opt-rec-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #2563eb;
+      margin-bottom: 6px;
+      grid-column: 1 / -1;
+    }
+    .opt-rec-primary {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #1d4ed8;
+      line-height: 1;
+    }
+    .opt-rec-primary-label {
+      font-size: 0.7rem;
+      color: #6b9ae8;
+      margin-top: 4px;
+    }
+    .opt-rec-metrics {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      align-self: center;
+    }
+    .opt-rec-metric { text-align: center; }
+    .opt-rec-metric-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      line-height: 1;
+    }
+    .opt-rec-metric-val.warn { color: #b45309; }
+    .opt-rec-metric-label {
+      font-size: 0.65rem;
+      color: #6b9ae8;
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+
+    /* Chart grid */
+    .opt-charts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .opt-chart-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    }
+    .opt-chart-card.full-width {
+      grid-column: 1 / -1;
+    }
+    .opt-chart-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #aaa;
+      margin-bottom: 12px;
+    }
+
+    /* Metrics table */
+    .opt-table-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      margin-bottom: 14px;
+    }
+    .opt-table-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .opt-table-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #aaa;
+      flex: 1;
+    }
+    .opt-table-toggle {
+      font-size: 0.72rem;
+      color: #2563eb;
+      cursor: pointer;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .opt-table-wrap {
+      overflow-x: auto;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+    table.opt-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    table.opt-table th {
+      text-align: right;
+      padding: 6px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #f0f0f0;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1;
+    }
+    table.opt-table th:first-child { text-align: left; }
+    table.opt-table td {
+      text-align: right;
+      padding: 6px 10px;
+      border-bottom: 1px solid #f8f8f8;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    table.opt-table td:first-child { text-align: left; font-weight: 600; }
+    table.opt-table tr:hover td { background: #f8faff; }
+    table.opt-table tr.optimal td {
+      background: #eff6ff;
+      border-left: none;
+    }
+    table.opt-table tr.optimal td:first-child {
+      border-left: 3px solid #2563eb;
+      color: #1d4ed8;
+    }
+    table.opt-table tr.hidden-row { display: none; }
+    td.warn-cell { color: #b45309; font-weight: 600; }
+    td.good-cell { color: #16a34a; font-weight: 600; }
+
+    @media (max-width: 760px) {
+      .opt-charts { grid-template-columns: 1fr; }
+      .opt-rec-metrics { grid-template-columns: repeat(3, 1fr); }
+    }
   </style>
 </head>
 <body>
@@ -315,6 +569,112 @@
     </div><!-- /main -->
   </div>
 
+  <!-- ================================================================
+       OPTIMIZER SECTION
+       ================================================================ -->
+  <div class="optimizer">
+
+    <div class="opt-header">
+      <h2>Summer Optimizer</h2>
+      <span class="opt-outdated" id="opt-outdated">Results outdated — re-run</span>
+      <label style="font-size:0.8rem;color:#666;">Resolution</label>
+      <select id="opt-resolution">
+        <option value="fast">Fast (step 3", every 5th day)</option>
+        <option value="standard" selected>Standard (step 2", every 3rd day)</option>
+        <option value="full">Full (step 1", every day)</option>
+      </select>
+      <button class="btn-run" id="opt-run">Run Optimizer</button>
+    </div>
+
+    <div class="opt-progress-wrap" id="opt-progress-wrap">
+      <div class="opt-progress-label" id="opt-progress-label">Computing…</div>
+      <div class="opt-progress-bar">
+        <div class="opt-progress-fill" id="opt-progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="opt-results" id="opt-results">
+
+      <!-- Recommendation -->
+      <div class="opt-rec">
+        <div class="opt-rec-title">Optimal Configuration</div>
+        <div>
+          <div class="opt-rec-primary" id="rec-ph">—</div>
+          <div class="opt-rec-primary-label">Optimal P<sub>H</sub></div>
+        </div>
+        <div class="opt-rec-metrics">
+          <div class="opt-rec-metric">
+            <div class="opt-rec-metric-val" id="rec-avg">—</div>
+            <div class="opt-rec-metric-label">Avg summer<br>coverage</div>
+          </div>
+          <div class="opt-rec-metric">
+            <div class="opt-rec-metric-val" id="rec-min">—</div>
+            <div class="opt-rec-metric-label">Worst-case<br>coverage</div>
+          </div>
+          <div class="opt-rec-metric">
+            <div class="opt-rec-metric-val" id="rec-hrs">—</div>
+            <div class="opt-rec-metric-label">Full-coverage<br>hrs/day</div>
+          </div>
+          <div class="opt-rec-metric">
+            <div class="opt-rec-metric-val" id="rec-updraft">—</div>
+            <div class="opt-rec-metric-label">Updraft-risk<br>days</div>
+          </div>
+          <div class="opt-rec-metric">
+            <div class="opt-rec-metric-val" id="rec-dropoff">—</div>
+            <div class="opt-rec-metric-label">Avg coverage<br>drop-off</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts row 1: Coverage vs PH + Hourly Breakdown -->
+      <div class="opt-charts">
+        <div class="opt-chart-card">
+          <div class="opt-chart-title">Coverage vs Pole Height</div>
+          <canvas id="cv-ph"></canvas>
+        </div>
+        <div class="opt-chart-card">
+          <div class="opt-chart-title">Per-Hour Breakdown (Optimal P<sub>H</sub>)</div>
+          <canvas id="cv-hourly"></canvas>
+        </div>
+      </div>
+
+      <!-- Heatmap full width -->
+      <div class="opt-charts">
+        <div class="opt-chart-card full-width">
+          <div class="opt-chart-title">Coverage Heatmap — Date × Time (Optimal P<sub>H</sub>)</div>
+          <canvas id="cv-heatmap"></canvas>
+        </div>
+      </div>
+
+      <!-- Metrics table -->
+      <div class="opt-table-card">
+        <div class="opt-table-header">
+          <div class="opt-table-title">All Configurations</div>
+          <button class="opt-table-toggle" id="opt-table-toggle">Show all rows</button>
+        </div>
+        <div class="opt-table-wrap">
+          <table class="opt-table" id="opt-table">
+            <thead>
+              <tr>
+                <th>P<sub>H</sub></th>
+                <th>S<sub>L</sub></th>
+                <th>S<sub>θ</sub></th>
+                <th>Avg cov</th>
+                <th>Min cov</th>
+                <th>Full hrs/day</th>
+                <th>Updraft days</th>
+                <th>Drop-off</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody id="opt-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /opt-results -->
+  </div><!-- /optimizer -->
+
   <script>
     // ── Helpers ──────────────────────────────────────────────────────────────
 
@@ -347,54 +707,35 @@
     const now = new Date();
     $date.value = now.toISOString().slice(0, 10);
 
-    // ── Compute ───────────────────────────────────────────────────────────────
+    // ── Pure shade computation (no DOM) ──────────────────────────────────────
 
-    function compute() {
-      const PH  = +$ph.value;
-      const GL  = +$gl.value;
-      const FW  = +$fw.value || 84;
-      const WH  = +$wh.value || 109;
-      const HW  = +$hw.value;
-      const lat = parseFloat($lat.value);
-      const lon = parseFloat($lon.value);
-      const timeMin = +$time.value;
-
-      // Sail geometry
+    function computeShade({ PH, GL, FW, WH, lat, lon, dateStr, timeMin }) {
       const MH = WH - PH;
       const MW = FW - GL;
       const SL = Math.sqrt(MH * MH + MW * MW);
-      const ST = Math.acos(MW / SL) * 180 / Math.PI;   // degrees from horizontal
+      const ST = Math.acos(MW / SL) * 180 / Math.PI;
 
-      // Sun position
-      const [yr, mo, dy] = $date.value.split('-').map(Number);
+      const [yr, mo, dy] = dateStr.split('-').map(Number);
       const dt = new Date(yr, mo - 1, dy, Math.floor(timeMin / 60), timeMin % 60, 0);
       const sun = SunCalc.getPosition(dt, lat, lon);
-      const alt = sun.altitude;   // radians, positive = above horizon
+      const alt = sun.altitude;
 
-      // Shadow projection in cross-section (sun always from left)
       let coverage = 0;
       let shadowLo = null, shadowHi = null;
 
-      // SunCalc azimuth: 0 = south, π/2 = west. sin > 0 means sun is west of south.
       const sunIsWest = Math.sin(sun.azimuth) > 0;
 
-      // How far western afternoon sun penetrates the covered patio through its open west face.
-      // The building facade above the 11th-floor opening blocks high-angle sun (a 3D obstruction
-      // the 2D cross-section can't model). Gate penetration to sun ≥ 45° west of south —
-      // matching the real-world observation of no light entering before ~3–4 PM.
       const westComponent = Math.max(0, Math.sin(sun.azimuth));
-      const westGated = westComponent > 0.94 ? westComponent : 0; // ~70° west of south ≈ 4 PM in DC summer
+      const westGated = westComponent > 0.94 ? westComponent : 0;
       const patioPenetration = alt > 0.01
         ? Math.min((WH / Math.tan(Math.max(alt, 0.001))) * westGated, PATIO_WIDTH)
         : 0;
 
       if (alt > 0.01 && !sunIsWest) {
-        // Building outer wall blocks all direct sun from the open patio in the morning.
         shadowLo = 0;
         shadowHi = FW;
         coverage = 1;
       } else if (alt > 0.01) {
-        // Western sun — sail shadow math applies.
         const safeAlt = Math.max(alt, 0.001);
         const relativeAzimuth = Math.abs(sun.azimuth - (Math.PI / 2));
         const sf = (1 / Math.tan(safeAlt)) * Math.cos(relativeAzimuth);
@@ -412,15 +753,33 @@
 
       const sunAltDeg = alt * 180 / Math.PI;
 
-      // Updraft risk is evaluated against 4 PM (the critical transition point for this
-      // installation), not the current slider position — so the warning reflects the
-      // structural risk of the sail configuration for the day, not a momentary sun angle.
       const dt4pm = new Date(yr, mo - 1, dy, 16, 0, 0);
       const sun4pm = SunCalc.getPosition(dt4pm, lat, lon);
       const alt4pmDeg = sun4pm.altitude * 180 / Math.PI;
       const updraftRisk = alt4pmDeg > 0 && alt4pmDeg < ST;
 
-      return { PH, GL, FW, WH, HW, MH, MW, SL, ST, alt, coverage, shadowLo, shadowHi, timeMin, azimuth: sun.azimuth, sunIsWest, patioPenetration, sunAltDeg, updraftRisk };
+      return { MH, MW, SL, ST, alt, coverage, shadowLo, shadowHi, sunIsWest, patioPenetration, sunAltDeg, updraftRisk, azimuth: sun.azimuth };
+    }
+
+    // ── DOM compute wrapper ───────────────────────────────────────────────────
+
+    function compute() {
+      const PH  = +$ph.value;
+      const GL  = +$gl.value;
+      const FW  = +$fw.value || 84;
+      const WH  = +$wh.value || 109;
+      const HW  = +$hw.value;
+      const lat = parseFloat($lat.value);
+      const lon = parseFloat($lon.value);
+      const timeMin = +$time.value;
+      const dateStr = $date.value;
+
+      const s = computeShade({ PH, GL, FW, WH, lat, lon, dateStr, timeMin });
+      return { PH, GL, FW, WH, HW, MH: s.MH, MW: s.MW, SL: s.SL, ST: s.ST,
+               alt: s.alt, coverage: s.coverage, shadowLo: s.shadowLo, shadowHi: s.shadowHi,
+               timeMin, azimuth: s.azimuth, sunIsWest: s.sunIsWest,
+               patioPenetration: s.patioPenetration, sunAltDeg: s.sunAltDeg,
+               updraftRisk: s.updraftRisk };
     }
 
     // ── Draw ─────────────────────────────────────────────────────────────────
@@ -428,7 +787,6 @@
     function draw(s) {
       const W = cv.width, H = cv.height;
 
-      // Scale to fit the cross-section: FW + covered patio extension wide, max(WH, PH) tall
       const PAD_L = 140, PAD_R = 40, PAD_T = 24, PAD_B = 36;
       const drawW = W - PAD_L - PAD_R;
       const drawH = H - PAD_T - PAD_B;
@@ -442,7 +800,6 @@
       const cx = x => originX + x * SCALE;
       const cy = z => originY - z * SCALE;
 
-      // Sky gradient
       const sky = ctx.createLinearGradient(0, 0, 0, originY);
       if (s.alt > 0) {
         sky.addColorStop(0, '#4a90d9');
@@ -454,97 +811,74 @@
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, W, originY);
 
-      // Ground — full canvas
       ctx.fillStyle = '#c8b97a';
       ctx.fillRect(0, originY, W, H - originY);
 
-      // Covered patio room (to the right of the wall)
       const patioLeft = cx(s.FW);
       const patioRight = cx(s.FW + PATIO_WIDTH);
       const patioTop = cy(s.WH);
       const patioFloor = originY;
       const ZONE_HEIGHT = 14;
 
-      // Covered patio background (darker gray)
       ctx.fillStyle = '#666666';
       ctx.fillRect(patioLeft, patioTop, patioRight - patioLeft, patioFloor - patioTop);
 
-      // Calculate shadow on covered patio
-      let patioShadowCoverage = 0;
       if (s.shadowLo !== null && s.alt > 0.01) {
         const shadowRight = s.shadowHi;
         const patioStartX = s.FW;
         const patioEndX = s.FW + PATIO_WIDTH;
-
         if (shadowRight > patioStartX) {
           const shadowOnPatio = Math.min(shadowRight, patioEndX) - patioStartX;
           if (shadowOnPatio > 0) {
-            patioShadowCoverage = shadowOnPatio / PATIO_WIDTH;
-            // Draw shadow on patio
             ctx.fillStyle = '#3A4A5E';
-            ctx.fillRect(patioLeft, patioTop, (shadowOnPatio) * SCALE, patioFloor - patioTop);
+            ctx.fillRect(patioLeft, patioTop, shadowOnPatio * SCALE, patioFloor - patioTop);
           }
         }
       }
 
       const { patioPenetration } = s;
 
-      // Patio room label
       ctx.font = 'bold 14px system-ui';
       ctx.fillStyle = '#ff4444';
       ctx.textAlign = 'center';
       ctx.fillText('COVERED PATIO', (patioLeft + patioRight) / 2, (patioTop + patioFloor) / 2 + 6);
 
-      // Patio floor zones: lit (yellow) vs shaded (dark blue-gray)
       if (s.shadowLo !== null) {
         const lo = Math.max(0, s.shadowLo);
         const hi = Math.min(s.FW, s.shadowHi);
 
-        // Left lit zone (before shadow)
         if (lo > 0) {
           ctx.fillStyle = '#FFE680';
           ctx.fillRect(cx(0), originY, cx(lo) - cx(0), ZONE_HEIGHT);
         }
-
-        // Shaded zone
         if (hi > lo) {
           ctx.fillStyle = '#3A4A5E';
           ctx.fillRect(cx(lo), originY, cx(hi) - cx(lo), ZONE_HEIGHT);
         }
-
-        // Right lit zone (after shadow)
         if (hi < s.FW) {
           ctx.fillStyle = '#FFE680';
           ctx.fillRect(cx(hi), originY, cx(s.FW) - cx(hi), ZONE_HEIGHT);
         }
       } else {
-        // No shadow — entire floor is lit
         ctx.fillStyle = '#FFE680';
         ctx.fillRect(cx(0), originY, s.FW * SCALE, ZONE_HEIGHT);
       }
 
-      // Zone labels
       if (s.shadowLo !== null) {
         const lo = Math.max(0, s.shadowLo);
         const hi = Math.min(s.FW, s.shadowHi);
-
-        // "Shaded" label
         if (hi > lo && (hi - lo) > s.FW * 0.15) {
           ctx.font = 'bold 13px system-ui';
           ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
           ctx.textAlign = 'center';
           ctx.fillText('Shaded', (cx(lo) + cx(hi)) / 2, originY + ZONE_HEIGHT / 2 + 5);
         }
-
-        // "Lit" label (left zone)
         if (lo > s.FW * 0.15) {
           ctx.font = '11px system-ui';
           ctx.fillStyle = 'rgba(80, 80, 80, 0.7)';
           ctx.textAlign = 'center';
           ctx.fillText('Lit', (cx(0) + cx(lo)) / 2, originY + ZONE_HEIGHT / 2 + 4);
         }
-
-        // "Lit" label (right zone)
         if ((s.FW - hi) > s.FW * 0.15) {
           ctx.font = '11px system-ui';
           ctx.fillStyle = 'rgba(80, 80, 80, 0.7)';
@@ -552,14 +886,12 @@
           ctx.fillText('Lit', (cx(hi) + cx(s.FW)) / 2, originY + ZONE_HEIGHT / 2 + 4);
         }
       } else if (s.coverage > 0 && s.coverage < 0.95) {
-        // Mostly lit
         ctx.font = '12px system-ui';
         ctx.fillStyle = 'rgba(80, 80, 80, 0.6)';
         ctx.textAlign = 'center';
         ctx.fillText('Lit', cx(s.FW / 2), originY + ZONE_HEIGHT / 2 + 4);
       }
 
-      // Covered patio floor zone — lit from west in afternoon, dark otherwise
       if (patioPenetration > 0) {
         ctx.fillStyle = '#FFE680';
         ctx.fillRect(patioLeft, originY, Math.min(patioPenetration * SCALE, patioRight - patioLeft), ZONE_HEIGHT);
@@ -569,15 +901,12 @@
         ctx.fillRect(patioLeft + patioPenetration * SCALE, originY, patioRight - patioLeft - patioPenetration * SCALE, ZONE_HEIGHT);
       }
 
-      // Wall (right side)
       ctx.fillStyle = '#a0a8b0';
       ctx.fillRect(cx(s.FW) - 7, cy(s.WH), 7, s.WH * SCALE);
 
-      // Pole (left side)
       ctx.fillStyle = '#7a6245';
       ctx.fillRect(cx(0) - 4, cy(s.PH), 8, s.PH * SCALE);
 
-      // Sail (line + subtle fill)
       const sailX1 = cx(0), sailY1 = cy(s.PH);
       const sailX2 = cx(s.FW - s.GL), sailY2 = cy(s.WH);
 
@@ -598,7 +927,6 @@
       ctx.lineCap = 'round';
       ctx.stroke();
 
-      // Sun rays
       if (s.alt > 0.01) {
         const skyL = originX - 60;
         const skyR = cx(s.FW + PATIO_WIDTH) + 60;
@@ -609,8 +937,6 @@
           patioTop - 50
         );
 
-        // Only draw rays to open patio when sun is west of south — eastern sun is blocked
-        // by the building's outer wall and covered patio roof (no rays can reach open patio).
         if (s.sunIsWest) {
           for (let i = 0; i < 10; i++) {
             const t = i / 9;
@@ -625,8 +951,6 @@
           }
         }
 
-        // Western afternoon sun enters covered patio through its open west face.
-        // Clip rays to interior so they don't overdraw the walls.
         if (patioPenetration > 0) {
           ctx.save();
           ctx.beginPath();
@@ -645,7 +969,6 @@
         }
       }
 
-      // Enhanced sun symbol — moves across sky based on time of day
       if (s.alt > 0) {
         const skyL = originX - 60;
         const skyR = cx(s.FW + PATIO_WIDTH) + 60;
@@ -653,10 +976,9 @@
         const sunX = skyL + azNorm * (skyR - skyL);
         const sunY = Math.min(
           PAD_T + 20 + (1 - Math.sin(Math.max(s.alt, 0.01))) * (originY - PAD_T - 70),
-          patioTop - 50  // always keep sun clearly above the covered patio roof
+          patioTop - 50
         );
 
-        // Large outer glow
         const glow3 = ctx.createRadialGradient(sunX, sunY, 20, sunX, sunY, 60);
         glow3.addColorStop(0, 'rgba(255, 200, 0, 0.15)');
         glow3.addColorStop(1, 'rgba(255, 150, 0, 0)');
@@ -665,7 +987,6 @@
         ctx.arc(sunX, sunY, 60, 0, Math.PI * 2);
         ctx.fill();
 
-        // Mid glow
         const glow2 = ctx.createRadialGradient(sunX, sunY, 12, sunX, sunY, 38);
         glow2.addColorStop(0, 'rgba(255, 210, 50, 0.35)');
         glow2.addColorStop(1, 'rgba(255, 170, 0, 0.1)');
@@ -674,7 +995,6 @@
         ctx.arc(sunX, sunY, 38, 0, Math.PI * 2);
         ctx.fill();
 
-        // Bright inner glow
         const glow1 = ctx.createRadialGradient(sunX, sunY, 8, sunX, sunY, 20);
         glow1.addColorStop(0, 'rgba(255, 230, 100, 0.5)');
         glow1.addColorStop(1, 'rgba(255, 210, 50, 0.2)');
@@ -683,13 +1003,11 @@
         ctx.arc(sunX, sunY, 20, 0, Math.PI * 2);
         ctx.fill();
 
-        // Sun circle itself
         ctx.beginPath();
         ctx.arc(sunX, sunY, 22, 0, Math.PI * 2);
         ctx.fillStyle = '#FFD600';
         ctx.fill();
 
-        // Sun highlight
         ctx.beginPath();
         ctx.arc(sunX - 7, sunY - 7, 7, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
@@ -703,27 +1021,21 @@
         ctx.fill();
       }
 
-      // Labels
       ctx.font = '11px system-ui';
       ctx.fillStyle = 'rgba(255,255,255,0.75)';
 
-      // F_W label along floor
       ctx.textAlign = 'center';
       ctx.fillText(`F_W = ${s.FW}"`, cx(s.FW / 2), originY + 20);
 
-      // Covered patio width label
       ctx.textAlign = 'center';
       ctx.fillText(`${PATIO_WIDTH}"`, (patioLeft + patioRight) / 2, originY + 20);
 
-      // PH label left
       ctx.textAlign = 'right';
       ctx.fillText(`P_H = ${s.PH}"`, cx(0) - 8, cy(s.PH / 2) + 4);
 
-      // WH label right
       ctx.textAlign = 'left';
       ctx.fillText(`W_H = ${s.WH}"`, cx(s.FW) + 5, cy(s.WH / 2) + 4);
 
-      // SL label on sail
       ctx.textAlign = 'center';
       ctx.fillStyle = '#fff';
       ctx.font = 'bold 11px system-ui';
@@ -739,13 +1051,11 @@
     function update() {
       const s = compute();
 
-      // Labels
       document.getElementById('ph-val').textContent    = `${s.PH}"`;
       document.getElementById('gl-val').textContent    = `${s.GL}"`;
       document.getElementById('hw-val').textContent    = `${s.HW}"`;
       document.getElementById('time-label').textContent = fmtTime(s.timeMin);
 
-      // Stats
       const pct = Math.round(s.coverage * 100);
       document.getElementById('s-sl').textContent    = s.SL.toFixed(1) + '"';
       document.getElementById('s-sl-net').textContent = Math.max(0, s.SL - s.HW).toFixed(1) + '"';
@@ -753,11 +1063,9 @@
       document.getElementById('s-sun').textContent   = (s.alt * 180 / Math.PI).toFixed(1) + '°';
       document.getElementById('s-cov').textContent   = pct + '%';
 
-      // Coverage bar
       document.getElementById('cov-pct').textContent   = pct + '%';
       document.getElementById('cov-fill').style.width  = pct + '%';
 
-      // Updraft risk warning
       const warning = document.getElementById('warning');
       const warningDetail = document.getElementById('warning-detail');
       if (s.updraftRisk) {
@@ -772,7 +1080,6 @@
       document.getElementById('s-sun').classList.toggle('warn', s.updraftRisk);
       document.getElementById('s-st').classList.toggle('warn', s.updraftRisk);
 
-      // Canvas (responsive)
       const card = cv.parentElement;
       cv.width  = card.clientWidth - 32;
       cv.height = Math.round(cv.width * 0.62);
@@ -781,12 +1088,586 @@
 
     // ── Events ────────────────────────────────────────────────────────────────
 
+    let optimizerHasRun = false;
+
     [$ph, $gl, $fw, $wh, $hw, $lat, $lon, $date, $time].forEach(el =>
       el.addEventListener('input', update)
     );
-    window.addEventListener('resize', update);
+    // Mark optimizer results as outdated when structure/location changes
+    [$gl, $fw, $wh, $lat, $lon].forEach(el =>
+      el.addEventListener('input', () => {
+        if (optimizerHasRun) document.getElementById('opt-outdated').classList.add('visible');
+      })
+    );
+    window.addEventListener('resize', () => {
+      update();
+      if (optimizerHasRun) redrawOptCharts();
+    });
 
     update();
+
+    // ════════════════════════════════════════════════════════════════════
+    // OPTIMIZER
+    // ════════════════════════════════════════════════════════════════════
+
+    let optState = null; // last completed run
+
+    function buildSampleGrid(resolution) {
+      const phStep   = resolution === 'fast' ? 3 : resolution === 'full' ? 1 : 2;
+      const dayStep  = resolution === 'fast' ? 5 : resolution === 'full' ? 1 : 3;
+
+      const phValues = [];
+      for (let ph = 24; ph <= 108; ph += phStep) phValues.push(ph);
+
+      const dates = [];
+      const start = new Date(new Date().getFullYear(), 5, 1);  // Jun 1
+      const end   = new Date(new Date().getFullYear(), 7, 31); // Aug 31
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + dayStep)) {
+        dates.push(d.toISOString().slice(0, 10));
+      }
+
+      const times = [];
+      for (let t = 780; t <= 1080; t += 15) times.push(t); // 1 PM – 6 PM
+
+      return { phValues, dates, times };
+    }
+
+    function computeMetricsForPH(ph, params, dates, times, storeMatrix) {
+      const { GL, FW, WH, lat, lon } = params;
+
+      const MH = WH - ph;
+      const MW = FW - GL;
+      const SL = Math.sqrt(MH * MH + MW * MW);
+      const ST = Math.acos(MW / SL) * 180 / Math.PI;
+
+      let sumCov = 0, count = 0;
+      let minCov = 1;
+      let fullCount = 0;
+      let updraftDays = 0;
+      const dropOffTimes = [];
+      const matrix = storeMatrix ? [] : null;
+
+      for (let di = 0; di < dates.length; di++) {
+        const dateStr = dates[di];
+        let dayDropOff = null;
+        const matRow = storeMatrix ? [] : null;
+
+        for (let ti = 0; ti < times.length; ti++) {
+          const timeMin = times[ti];
+          const r = computeShade({ PH: ph, GL, FW, WH, lat, lon, dateStr, timeMin });
+
+          if (r.alt > 0.01 && r.sunIsWest) {
+            // Only score afternoon western-sun slots (the hard case)
+            sumCov += r.coverage;
+            count++;
+            if (r.coverage < minCov) minCov = r.coverage;
+            if (r.coverage >= 0.99) fullCount++;
+            if (dayDropOff === null && r.coverage < 0.80) dayDropOff = timeMin;
+          }
+
+          if (matRow) matRow.push(r.coverage);
+        }
+
+        if (matrix) matrix.push(matRow || times.map(() => 1));
+
+        // Updraft check at 4 PM
+        if (ST > 0) {
+          const r4 = computeShade({ PH: ph, GL, FW, WH, lat, lon, dateStr, timeMin: 960 });
+          if (r4.updraftRisk) updraftDays++;
+        }
+
+        dropOffTimes.push(dayDropOff !== null ? dayDropOff : 1080); // 6 PM = never dropped
+      }
+
+      const avgCoverage = count > 0 ? sumCov / count : 1;
+      const worstCoverage = count > 0 ? minCov : 1;
+      const fullHoursPerDay = (fullCount / dates.length) * 0.25;
+      const avgDropOff = dropOffTimes.reduce((a, b) => a + b, 0) / dropOffTimes.length;
+      const totalDays = dates.length;
+
+      const score =
+        avgCoverage * 0.40 +
+        worstCoverage * 0.25 +
+        Math.min(fullHoursPerDay / 5, 1) * 0.20 +
+        (1 - updraftDays / totalDays) * 0.10 +
+        ((avgDropOff - 780) / 300) * 0.05;
+
+      return { ph, SL, ST, avgCoverage, worstCoverage, fullHoursPerDay, updraftDays, avgDropOff, score, matrix };
+    }
+
+    async function runOptimizer() {
+      const resolution = document.getElementById('opt-resolution').value;
+      const { phValues, dates, times } = buildSampleGrid(resolution);
+
+      const params = {
+        GL:  +$gl.value,
+        FW:  +$fw.value || 84,
+        WH:  +$wh.value || 109,
+        lat: parseFloat($lat.value),
+        lon: parseFloat($lon.value),
+      };
+
+      const btnRun = document.getElementById('opt-run');
+      const progWrap = document.getElementById('opt-progress-wrap');
+      const progFill = document.getElementById('opt-progress-fill');
+      const progLabel = document.getElementById('opt-progress-label');
+
+      btnRun.disabled = true;
+      progWrap.classList.add('visible');
+      document.getElementById('opt-results').classList.remove('visible');
+      document.getElementById('opt-outdated').classList.remove('visible');
+
+      const results = [];
+
+      for (let i = 0; i < phValues.length; i++) {
+        const ph = phValues[i];
+        const isLast = i === phValues.length - 1;
+        const m = computeMetricsForPH(ph, params, dates, times, isLast /* store matrix only for last, will reassign after optimal found */);
+        results.push(m);
+
+        const pct = Math.round((i + 1) / phValues.length * 100);
+        progFill.style.width = pct + '%';
+        progLabel.textContent = `Computing P_H ${ph}" (${pct}%)…`;
+
+        if (i % 5 === 0) await new Promise(r => setTimeout(r, 0));
+      }
+
+      // Find optimal
+      let optIdx = 0;
+      for (let i = 1; i < results.length; i++) {
+        if (results[i].score > results[optIdx].score) optIdx = i;
+      }
+
+      // Recompute optimal with full heatmap matrix
+      progLabel.textContent = 'Building heatmap…';
+      await new Promise(r => setTimeout(r, 0));
+      results[optIdx] = computeMetricsForPH(results[optIdx].ph, params, dates, times, true);
+
+      optState = { results, optIdx, params, dates, times };
+
+      progWrap.classList.remove('visible');
+      btnRun.disabled = false;
+      optimizerHasRun = true;
+
+      renderOptimizerResults();
+    }
+
+    function renderOptimizerResults() {
+      const { results, optIdx, dates, times } = optState;
+      const opt = results[optIdx];
+
+      document.getElementById('opt-results').classList.add('visible');
+
+      // Recommendation card
+      document.getElementById('rec-ph').textContent = opt.ph + '"';
+      document.getElementById('rec-avg').textContent = Math.round(opt.avgCoverage * 100) + '%';
+      document.getElementById('rec-min').textContent = Math.round(opt.worstCoverage * 100) + '%';
+      document.getElementById('rec-hrs').textContent = opt.fullHoursPerDay.toFixed(1);
+      const updEl = document.getElementById('rec-updraft');
+      updEl.textContent = opt.updraftDays;
+      updEl.className = 'opt-rec-metric-val' + (opt.updraftDays > 10 ? ' warn' : '');
+      document.getElementById('rec-dropoff').textContent = fmtTime(Math.round(opt.avgDropOff));
+
+      renderTableAndCharts();
+    }
+
+    function renderTableAndCharts() {
+      renderMetricsTable();
+      redrawOptCharts();
+    }
+
+    let showAllRows = false;
+
+    function renderMetricsTable() {
+      const { results, optIdx } = optState;
+      const tbody = document.getElementById('opt-table-body');
+      tbody.innerHTML = '';
+
+      results.forEach((r, i) => {
+        const isOpt = i === optIdx;
+        const tr = document.createElement('tr');
+        if (isOpt) tr.classList.add('optimal');
+
+        const hideRow = !showAllRows && !isOpt && i % 2 !== 0;
+        if (hideRow) tr.classList.add('hidden-row');
+
+        const dropOffStr = fmtTime(Math.round(r.avgDropOff));
+        const avgPct  = Math.round(r.avgCoverage * 100);
+        const minPct  = Math.round(r.worstCoverage * 100);
+        const updBad  = r.updraftDays > 10;
+
+        tr.innerHTML = `
+          <td>${r.ph}"${isOpt ? ' ★' : ''}</td>
+          <td>${r.SL.toFixed(1)}"</td>
+          <td>${r.ST.toFixed(1)}°</td>
+          <td class="${avgPct >= 85 ? 'good-cell' : avgPct < 70 ? 'warn-cell' : ''}">${avgPct}%</td>
+          <td class="${minPct >= 60 ? '' : 'warn-cell'}">${minPct}%</td>
+          <td>${r.fullHoursPerDay.toFixed(1)}</td>
+          <td class="${updBad ? 'warn-cell' : ''}">${r.updraftDays}</td>
+          <td>${dropOffStr}</td>
+          <td>${(r.score * 100).toFixed(1)}</td>
+        `;
+
+        tr.addEventListener('click', () => {
+          $ph.value = r.ph;
+          update();
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('opt-table-toggle').addEventListener('click', () => {
+      showAllRows = !showAllRows;
+      document.getElementById('opt-table-toggle').textContent = showAllRows ? 'Show fewer rows' : 'Show all rows';
+      if (optState) renderMetricsTable();
+    });
+
+    function redrawOptCharts() {
+      if (!optState) return;
+      const { results, optIdx, dates, times } = optState;
+
+      // Size canvases to their cards
+      ['cv-ph', 'cv-hourly', 'cv-heatmap'].forEach(id => {
+        const canvas = document.getElementById(id);
+        const card = canvas.parentElement;
+        canvas.width = card.clientWidth - 32;
+        const isHeatmap = id === 'cv-heatmap';
+        canvas.height = isHeatmap
+          ? Math.min(Math.max(dates.length * 5, 160), 280)
+          : Math.round(canvas.width * 0.52);
+      });
+
+      drawCoverageVsPH(document.getElementById('cv-ph'), results, optIdx);
+      drawHourlyBreakdown(document.getElementById('cv-hourly'), results[optIdx], times, dates, optState.params);
+      drawHeatmap(document.getElementById('cv-heatmap'), results[optIdx], dates, times);
+    }
+
+    // ── Chart: Coverage vs P_H ────────────────────────────────────────────────
+
+    function drawCoverageVsPH(canvas, results, optIdx) {
+      const ctx2 = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx2.clearRect(0, 0, W, H);
+
+      const PAD = { l: 44, r: 20, t: 20, b: 36 };
+      const cw = W - PAD.l - PAD.r;
+      const ch = H - PAD.t - PAD.b;
+
+      const phMin = results[0].ph, phMax = results[results.length - 1].ph;
+      const toX = ph => PAD.l + (ph - phMin) / (phMax - phMin) * cw;
+      const toY = v  => PAD.t + (1 - v) * ch;
+
+      // Grid
+      ctx2.strokeStyle = '#f0f0f0';
+      ctx2.lineWidth = 1;
+      [0.25, 0.5, 0.75, 1.0].forEach(v => {
+        ctx2.beginPath();
+        ctx2.moveTo(PAD.l, toY(v));
+        ctx2.lineTo(PAD.l + cw, toY(v));
+        ctx2.stroke();
+        ctx2.fillStyle = '#bbb';
+        ctx2.font = '10px system-ui';
+        ctx2.textAlign = 'right';
+        ctx2.fillText(Math.round(v * 100) + '%', PAD.l - 5, toY(v) + 3);
+      });
+
+      // 80% threshold dotted line
+      ctx2.setLineDash([4, 4]);
+      ctx2.strokeStyle = '#d0d0d0';
+      ctx2.lineWidth = 1;
+      ctx2.beginPath();
+      ctx2.moveTo(PAD.l, toY(0.80));
+      ctx2.lineTo(PAD.l + cw, toY(0.80));
+      ctx2.stroke();
+      ctx2.setLineDash([]);
+      ctx2.fillStyle = '#bbb';
+      ctx2.font = '9px system-ui';
+      ctx2.textAlign = 'left';
+      ctx2.fillText('80%', PAD.l + cw + 2, toY(0.80) + 3);
+
+      // Worst-case line (dashed red)
+      ctx2.strokeStyle = '#ef4444';
+      ctx2.lineWidth = 1.5;
+      ctx2.setLineDash([5, 3]);
+      ctx2.beginPath();
+      results.forEach((r, i) => {
+        const x = toX(r.ph), y = toY(r.worstCoverage);
+        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
+      });
+      ctx2.stroke();
+      ctx2.setLineDash([]);
+
+      // Average coverage line (solid blue)
+      ctx2.strokeStyle = '#2563eb';
+      ctx2.lineWidth = 2.5;
+      ctx2.beginPath();
+      results.forEach((r, i) => {
+        const x = toX(r.ph), y = toY(r.avgCoverage);
+        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
+      });
+      ctx2.stroke();
+
+      // Score line (green dashed)
+      const maxScore = Math.max(...results.map(r => r.score));
+      ctx2.strokeStyle = '#16a34a';
+      ctx2.lineWidth = 1.5;
+      ctx2.setLineDash([3, 3]);
+      ctx2.beginPath();
+      results.forEach((r, i) => {
+        const x = toX(r.ph), y = toY(r.score / maxScore);
+        i === 0 ? ctx2.moveTo(x, y) : ctx2.lineTo(x, y);
+      });
+      ctx2.stroke();
+      ctx2.setLineDash([]);
+
+      // Optimal marker
+      const opt = results[optIdx];
+      const ox = toX(opt.ph), oy = toY(opt.avgCoverage);
+      ctx2.beginPath();
+      ctx2.arc(ox, oy, 6, 0, Math.PI * 2);
+      ctx2.fillStyle = '#2563eb';
+      ctx2.fill();
+      ctx2.strokeStyle = '#fff';
+      ctx2.lineWidth = 2;
+      ctx2.stroke();
+
+      // Optimal P_H label
+      ctx2.fillStyle = '#1d4ed8';
+      ctx2.font = 'bold 11px system-ui';
+      ctx2.textAlign = ox > W - 80 ? 'right' : 'center';
+      ctx2.fillText(opt.ph + '"', ox + (ox > W - 80 ? -8 : 0), oy - 10);
+
+      // X axis labels
+      ctx2.fillStyle = '#aaa';
+      ctx2.font = '10px system-ui';
+      ctx2.textAlign = 'center';
+      results.forEach((r, i) => {
+        if (i % Math.ceil(results.length / 8) === 0 || i === results.length - 1) {
+          ctx2.fillText(r.ph + '"', toX(r.ph), H - PAD.b + 14);
+        }
+      });
+
+      // X axis label
+      ctx2.fillStyle = '#999';
+      ctx2.font = '10px system-ui';
+      ctx2.textAlign = 'center';
+      ctx2.fillText('Pole Height (P_H)', PAD.l + cw / 2, H - 4);
+
+      // Legend
+      const lx = PAD.l + cw - 130, ly = PAD.t + 8;
+      const items = [
+        { color: '#2563eb', dash: false, label: 'Avg coverage' },
+        { color: '#ef4444', dash: true,  label: 'Worst case' },
+        { color: '#16a34a', dash: true,  label: 'Score (norm)' },
+      ];
+      items.forEach((item, i) => {
+        const y = ly + i * 16;
+        ctx2.strokeStyle = item.color;
+        ctx2.lineWidth = 1.5;
+        if (item.dash) ctx2.setLineDash([4, 3]);
+        ctx2.beginPath();
+        ctx2.moveTo(lx, y); ctx2.lineTo(lx + 18, y);
+        ctx2.stroke();
+        ctx2.setLineDash([]);
+        ctx2.fillStyle = '#666';
+        ctx2.font = '10px system-ui';
+        ctx2.textAlign = 'left';
+        ctx2.fillText(item.label, lx + 22, y + 3);
+      });
+    }
+
+    // ── Chart: Hourly Breakdown ───────────────────────────────────────────────
+
+    function drawHourlyBreakdown(canvas, optResult, times, dates, params) {
+      const ctx2 = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx2.clearRect(0, 0, W, H);
+
+      // Compute avg coverage per time slot for this P_H
+      const { ph } = optResult;
+      const { GL, FW, WH, lat, lon } = params;
+      const hourlyAvg = times.map(timeMin => {
+        let sum = 0, cnt = 0;
+        dates.forEach(dateStr => {
+          const r = computeShade({ PH: ph, GL, FW, WH, lat, lon, dateStr, timeMin });
+          if (r.alt > 0.01 && r.sunIsWest) { sum += r.coverage; cnt++; }
+        });
+        return cnt > 0 ? sum / cnt : null;
+      });
+
+      const PAD = { l: 44, r: 16, t: 20, b: 44 };
+      const cw = W - PAD.l - PAD.r;
+      const ch = H - PAD.t - PAD.b;
+      const barW = Math.max(2, cw / times.length - 2);
+
+      // Grid
+      ctx2.strokeStyle = '#f0f0f0';
+      ctx2.lineWidth = 1;
+      [0.25, 0.5, 0.75, 1.0].forEach(v => {
+        ctx2.beginPath();
+        ctx2.moveTo(PAD.l, PAD.t + (1 - v) * ch);
+        ctx2.lineTo(PAD.l + cw, PAD.t + (1 - v) * ch);
+        ctx2.stroke();
+        ctx2.fillStyle = '#bbb';
+        ctx2.font = '10px system-ui';
+        ctx2.textAlign = 'right';
+        ctx2.fillText(Math.round(v * 100) + '%', PAD.l - 5, PAD.t + (1 - v) * ch + 3);
+      });
+
+      // 80% threshold
+      ctx2.setLineDash([4, 4]);
+      ctx2.strokeStyle = '#d0d0d0';
+      ctx2.beginPath();
+      ctx2.moveTo(PAD.l, PAD.t + 0.20 * ch);
+      ctx2.lineTo(PAD.l + cw, PAD.t + 0.20 * ch);
+      ctx2.stroke();
+      ctx2.setLineDash([]);
+
+      hourlyAvg.forEach((val, i) => {
+        if (val === null) return;
+        const x = PAD.l + (i / times.length) * cw + (cw / times.length - barW) / 2;
+        const barH = val * ch;
+        const y = PAD.t + ch - barH;
+
+        // Color: blue for high coverage, orange for low
+        const t = val;
+        const r = Math.round(255 * (1 - t) * 0.8);
+        const g = Math.round(100 + 100 * t);
+        const b = Math.round(235 * t);
+        ctx2.fillStyle = `rgb(${r},${g},${b})`;
+        ctx2.fillRect(x, y, barW, barH);
+
+        // Value label on bar
+        if (barH > 18) {
+          ctx2.fillStyle = 'rgba(255,255,255,0.9)';
+          ctx2.font = 'bold 9px system-ui';
+          ctx2.textAlign = 'center';
+          ctx2.fillText(Math.round(val * 100) + '%', x + barW / 2, y + 11);
+        }
+      });
+
+      // X axis time labels
+      ctx2.fillStyle = '#aaa';
+      ctx2.font = '10px system-ui';
+      ctx2.textAlign = 'center';
+      times.forEach((t, i) => {
+        if (i % 4 === 0) { // every hour
+          const x = PAD.l + (i / times.length) * cw + (cw / times.length) / 2;
+          ctx2.fillText(fmtTime(t), x, H - PAD.b + 14);
+        }
+      });
+
+      ctx2.fillStyle = '#999';
+      ctx2.font = '10px system-ui';
+      ctx2.textAlign = 'center';
+      ctx2.fillText('Time of Day', PAD.l + cw / 2, H - 4);
+    }
+
+    // ── Chart: Heatmap ────────────────────────────────────────────────────────
+
+    function drawHeatmap(canvas, optResult, dates, times) {
+      const ctx2 = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      ctx2.clearRect(0, 0, W, H);
+
+      if (!optResult.matrix) return;
+
+      const PAD = { l: 50, r: 60, t: 16, b: 36 };
+      const cw = W - PAD.l - PAD.r;
+      const ch = H - PAD.t - PAD.b;
+
+      const cellW = cw / dates.length;
+      const cellH = ch / times.length;
+
+      // Draw cells
+      optResult.matrix.forEach((row, di) => {
+        row.forEach((cov, ti) => {
+          const x = PAD.l + di * cellW;
+          const y = PAD.t + ti * cellH;
+
+          // White → steel blue scale
+          const v = cov;
+          const rr = Math.round(255 * (1 - v * 0.72));
+          const gg = Math.round(255 * (1 - v * 0.45));
+          const bb = Math.round(255 * (1 - v * 0.10));
+          ctx2.fillStyle = `rgb(${rr},${gg},${bb})`;
+          ctx2.fillRect(x, y, Math.ceil(cellW), Math.ceil(cellH));
+        });
+      });
+
+      // Month labels on X axis
+      ctx2.fillStyle = '#888';
+      ctx2.font = '10px system-ui';
+      ctx2.textAlign = 'center';
+      const months = ['Jun', 'Jul', 'Aug'];
+      months.forEach((mon, mi) => {
+        const dayOffset = [0, 30, 61][mi];
+        const daysInSample = dates.length;
+        const totalDays = 92;
+        const x = PAD.l + (dayOffset / totalDays) * cw + (30 / totalDays) * cw / 2;
+        ctx2.fillText(mon, x, H - PAD.b + 14);
+      });
+
+      // Time labels on Y axis
+      ctx2.fillStyle = '#888';
+      ctx2.font = '10px system-ui';
+      ctx2.textAlign = 'right';
+      times.forEach((t, ti) => {
+        if (ti % 4 === 0) {
+          const y = PAD.t + ti * cellH + cellH / 2 + 3;
+          ctx2.fillText(fmtTime(t), PAD.l - 5, y);
+        }
+      });
+
+      // Color scale legend (right side)
+      const lx = W - PAD.r + 8, ly = PAD.t, lh = ch;
+      const lw = 12;
+      for (let i = 0; i <= lh; i++) {
+        const v = 1 - i / lh;
+        const rr = Math.round(255 * (1 - v * 0.72));
+        const gg = Math.round(255 * (1 - v * 0.45));
+        const bb = Math.round(255 * (1 - v * 0.10));
+        ctx2.fillStyle = `rgb(${rr},${gg},${bb})`;
+        ctx2.fillRect(lx, ly + i, lw, 1);
+      }
+      ctx2.strokeStyle = '#ddd';
+      ctx2.lineWidth = 1;
+      ctx2.strokeRect(lx, ly, lw, lh);
+      ctx2.fillStyle = '#888';
+      ctx2.font = '9px system-ui';
+      ctx2.textAlign = 'left';
+      ctx2.fillText('100%', lx + lw + 3, ly + 8);
+      ctx2.fillText('80%',  lx + lw + 3, ly + lh * 0.2 + 3);
+      ctx2.fillText('50%',  lx + lw + 3, ly + lh * 0.5 + 3);
+      ctx2.fillText('0%',   lx + lw + 3, ly + lh - 2);
+
+      // 80% contour line
+      ctx2.strokeStyle = 'rgba(245, 158, 11, 0.7)';
+      ctx2.lineWidth = 1;
+      ctx2.setLineDash([3, 2]);
+      const threshold = 0.80;
+      optResult.matrix.forEach((row, di) => {
+        row.forEach((cov, ti) => {
+          if (ti < times.length - 1) {
+            const nextCov = (optResult.matrix[di][ti + 1] || 1);
+            if ((cov >= threshold) !== (nextCov >= threshold)) {
+              const x = PAD.l + di * cellW;
+              const y = PAD.t + (ti + 0.5) * cellH;
+              ctx2.beginPath();
+              ctx2.moveTo(x, y);
+              ctx2.lineTo(x + cellW, y);
+              ctx2.stroke();
+            }
+          }
+        });
+      });
+      ctx2.setLineDash([]);
+    }
+
+    // ── Run button ────────────────────────────────────────────────────────────
+
+    document.getElementById('opt-run').addEventListener('click', runOptimizer);
   </script>
 </body>
 </html>
